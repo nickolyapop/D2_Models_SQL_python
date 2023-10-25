@@ -1,0 +1,154 @@
+ Windows PowerShell
+(C) Корпорация Майкрософт, 2009. Все права защищены.
+
+PS D:\Skillfactory\Django\D2> python -m venv venv
+
+
+PS D:\Skillfactory\Django\D2> venv\scripts\activate
+
+(venv) PS D:\Skillfactory\Django\D2> pip3 install django
+Collecting django
+  Using cached Django-4.2.6-py3-none-any.whl (8.0 MB)
+Collecting backports.zoneinfo
+  Using cached backports.zoneinfo-0.2.1-cp38-cp38-win_amd64.whl (38 kB)
+Collecting asgiref<4,>=3.6.0
+  Using cached asgiref-3.7.2-py3-none-any.whl (24 kB)
+Collecting sqlparse>=0.3.1
+  Using cached sqlparse-0.4.4-py3-none-any.whl (41 kB)
+Collecting tzdata
+  Using cached tzdata-2023.3-py2.py3-none-any.whl (341 kB)
+Collecting typing-extensions>=4
+  Using cached typing_extensions-4.8.0-py3-none-any.whl (31 kB)
+Installing collected packages: typing-extensions, tzdata, sqlparse, backports.zoneinfo, asgiref, django
+Successfully installed asgiref-3.7.2 backports.zoneinfo-0.2.1 django-4.2.6 sqlparse-0.4.4 typing-extensions-4.8.0 tzdata-2023.3
+WARNING: You are using pip version 21.1.1; however, version 23.3.1 is available.
+You should consider upgrading via the 'd:\skillfactory\django\d2\venv\scripts\python.exe -m pip install --upgrade pip' command.
+
+(venv) PS D:\Skillfactory\Django\D2> d:\skillfactory\django\d2\venv\scripts\python.exe -m pip install --upgrade pip
+Requirement already satisfied: pip in d:\skillfactory\django\d2\venv\lib\site-packages (21.1.1)
+Collecting pip
+  Using cached pip-23.3.1-py3-none-any.whl (2.1 MB)
+Installing collected packages: pip
+  Attempting uninstall: pip
+    Found existing installation: pip 21.1.1
+    Uninstalling pip-21.1.1:
+      Successfully uninstalled pip-21.1.1
+
+Successfully installed pip-23.3.1
+(venv) PS D:\Skillfactory\Django\D2> django-admin startproject NewsPaper
+(venv) PS D:\Skillfactory\Django\D2> cd NewsPaper
+(venv) PS D:\Skillfactory\Django\D2\NewsPaper> python manage.py startapp news
+
+(venv) PS D:\Skillfactory\Django\D2\NewsPaper> python manage.py startapp accounts
+(venv) PS D:\Skillfactory\Django\D2\NewsPaper> py manage.py shell
+Python 3.8.10 (tags/v3.8.10:3d8993a, May  3 2021, 11:48:03) [MSC v.1928 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from news.models import *
+>>> exit()
+
+(venv) PS D:\Skillfactory\Django\D2\NewsPaper> python manage.py makemigrations
+←[36;1mMigrations for 'news':←[0m
+  ←[1mnews\migrations\0001_initial.py←[0m
+    - Create model Author
+    - Create model Category
+    - Create model Post
+    - Create model PostCategory
+    - Add field postCategory to post
+    - Create model Comment
+
+(venv) PS D:\Skillfactory\Django\D2\NewsPaper> python manage.py migrate
+←[36;1mOperations to perform:←[0m
+←[1m  Apply all migrations: ←[0madmin, auth, contenttypes, news, sessions
+←[36;1mRunning migrations:←[0m
+  Applying contenttypes.0001_initial...←[32;1m OK←[0m
+  Applying auth.0001_initial...←[32;1m OK←[0m
+  Applying admin.0001_initial...←[32;1m OK←[0m
+  Applying admin.0002_logentry_remove_auto_add...←[32;1m OK←[0m
+  Applying admin.0003_logentry_add_action_flag_choices...←[32;1m OK←[0m
+  Applying contenttypes.0002_remove_content_type_name...←[32;1m OK←[0m
+  Applying auth.0002_alter_permission_name_max_length...←[32;1m OK←[0m
+  Applying auth.0003_alter_user_email_max_length...←[32;1m OK←[0m
+  Applying auth.0004_alter_user_username_opts...←[32;1m OK←[0m
+  Applying auth.0005_alter_user_last_login_null...←[32;1m OK←[0m
+  Applying auth.0006_require_contenttypes_0002...←[32;1m OK←[0m
+  Applying auth.0007_alter_validators_add_error_messages...←[32;1m OK←[0m
+  Applying auth.0008_alter_user_username_max_length...←[32;1m OK←[0m
+  Applying auth.0009_alter_user_last_name_max_length...←[32;1m OK←[0m
+  Applying auth.0010_alter_group_name_max_length...←[32;1m OK←[0m
+  Applying auth.0011_update_proxy_permissions...←[32;1m OK←[0m
+  Applying auth.0012_alter_user_first_name_max_length...←[32;1m OK←[0m
+  Applying news.0001_initial...←[32;1m OK←[0m
+  Applying sessions.0001_initial...←[32;1m OK←[0m
+
+(venv) PS D:\Skillfactory\Django\D2\NewsPaper> python manage.py shell
+Python 3.8.10 (tags/v3.8.10:3d8993a, May  3 2021, 11:48:03) [MSC v.1928 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+
+>>> from news.models import *
+>>> user1 =  User.objects.create
+>>> user1 = User.objects.create(username='Mike', first_name='Frank')
+>>> Author.objects.create(authorUser=user1)
+<Author: Author object (1)>
+>>> user2 = User.objects.create(username='Nikolay', first_name='Popov')
+>>> Author.objects.create(authorUser=user2)
+<Author: Author object (2)>
+>>> Category.objects.create(name='IT')
+<Category: Category object (1)>
+>>> Category.objects.create(name='Education')
+<Category: Category object (2)>
+>>> Post.objects.create(author=Author.objects.get(authorUser=User.objects.get(username='Mike')), categoryType='NW', title='my news', text='my
+news content')
+<Post: Post object (1)>
+>>> Post.objects.create(author=Author.objects.get(authorUser=User.objects.get(username='Mike')), categoryType='AR', title='my text', text='my
+text content')
+<Post: Post object (2)>
+>>> Post.objects.create(author=Author.objects.get(authorUser=User.objects.get(username='Nikolay')), categoryType='AR', title='my title', text='my text content222')
+<Post: Post object (3)>
+>>> p1 = Post.objects.get(pk=1)
+>>> p2 = Post.objects.get(pk=2)
+>>> p3 = Post.objects.get(pk=3)
+>>> c1 = Category.objects.get(name='IT')
+>>> c2 = Category.objects.get(name='Education')
+>>> p1.postCategory.add(c1)
+>>> p2.postCategory.add(c1, c2)
+>>> p3.postCategory.add(c2)
+>>> Coment.objects.create(commentUser=User.objects.get(username='Mike'), commentPost= Post.objects.get(pk=1), text='comment text 2')
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+NameError: name 'Coment' is not defined
+>>> Comment.objects.create(commentUser=User.objects.get(username='Mike'), commentPost= Post.objects.get(pk=1), text='comment text 2')
+<Comment: Mike>
+>>> Comment.objects.create(commentUser=User.objects.get(username='Mike'), commentPost= Post.objects.get(pk=2), text='comment text 33')
+<Comment: Mike>
+>>> Comment.objects.create(commentUser=User.objects.get(username='Nikolay'), commentPost= Post.objects.get(pk=3), text='comment text 111')
+<Comment: Nikolay>
+>>> Post.objects.get(pk=1).like()
+>>> Post.objects.get(pk=1).like()
+>>> Post.objects.get(pk=1).like()
+>>> Post.objects.get(pk=2).like()
+>>> Post.objects.get(pk=3).dislike()
+>>> Post.objects.get(pk=2).like()
+
+>>> Comment.objects.get(pk=1).Like()
+>>> Comment.objects.get(pk=1).Like()
+>>> Comment.objects.get(pk=1).Like()
+>>> Comment.objects.get(pk=1).Like()
+>>> Comment.objects.get(pk=2).Like()
+>>> Comment.objects.get(pk=3).disLike()
+>>> Author.objects.get(authorUser=User.objects.get(username='Mike')).update_rating()
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "D:\Skillfactory\Django\D2\NewsPaper\news\models.py", line 15, in update_rating
+    pRat += postRat.get('postrating')
+TypeError: unsupported operand type(s) for +=: 'int' and 'NoneType'
+
+>>> ar.ratingAuthor
+0
+>>> Author.objects.get(authorUser=User.objects.get(username='Mike')).ratingAuthor
+0
+>>> best = Author.objects.all().order_by('-ratingAuthor').values('authorUser', 'ratingAuthor')[0]
+>>> print(best)
+{'authorUser': 1, 'ratingAuthor': 0}
+>>>
